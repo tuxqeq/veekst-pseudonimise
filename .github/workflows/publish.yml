@@ -1,8 +1,8 @@
 # Publishes a trained detector as a release of this repository.
 #
 # The training pod has no GitHub credential. It serves its out/onnx for a
-# short while at an address kept in the repository variable POD_URL, so the
-# address is never in the history or in a run's inputs. This workflow fetches
+# short while; the address is given when the run is started, masked in the
+# log, and never committed. This workflow fetches
 # the three files, checks each against the sha256 given when it was started
 # (read on the pod itself), and makes the release with the workflow's own
 # token. The weights were trained on generated text only (README.md).
@@ -12,6 +12,9 @@ on:
     inputs:
       tag:
         description: release tag
+        required: true
+      url:
+        description: where the pod serves out/onnx, for a few minutes
         required: true
       detector_sha256:
         description: sha256 of detector.onnx, read on the pod
@@ -27,11 +30,12 @@ jobs:
     steps:
       - name: fetch and check
         env:
-          URL: ${{ vars.POD_URL }}
+          URL: ${{ inputs.url }}
           DET: ${{ inputs.detector_sha256 }}
           TOK: ${{ inputs.tokenizer_sha256 }}
         run: |
           set -euo pipefail
+          echo "::add-mask::$URL"
           mkdir -p dist
           curl -fsSL --retry 3 -o dist/manifest.json "$URL/manifest.json"
           curl -fsSL --retry 3 -o dist/detector.onnx "$URL/detector.onnx"
