@@ -1,0 +1,39 @@
+# Publishes a trained detector as a release of this repository.
+#
+# The training pod has no GitHub credential. It serves its out/onnx for a
+# short while; publish/request.json names where, and this workflow fetches the
+# three files, checks each against the sha256 in the manifest it fetched, and
+# makes the release with the workflow's own token. The weights were trained on
+# generated text only (README.md).
+name: publish
+on:
+  push:
+    paths: ["publish/request.json"]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: fetch and check
+        run: |
+          set -euo pipefail
+          url=$(jq -r .url publish/request.json)
+          tag=$(jq -r .tag publish/request.json)
+          mkdir -p dist
+          curl -fsSL --retry 3 -o dist/manifest.json "$url/manifest.json"
+          for f in detector.onnx tokenizer.json; do
+            curl -fsSL --retry 3 -o "dist/$f" "$url/$f"
+            want=$(jq -r --arg f "$f" '.files[$f].sha256' dist/manifest.json)
+            got=$(sha256sum "dist/$f" | cut -d' ' -f1)
+            [ "$want" = "$got" ] || { echo "$f: sha256 $got, manifest $want"; exit 1; }
+          done
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+      - name: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" dist/detector.onnx dist/tokenizer.json dist/manifest.json \
+            --title "$TAG" --notes "Name detector trained on generated text only. See manifest.json for its dev measures."
