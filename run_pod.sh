@@ -14,9 +14,12 @@ cd veekst-pseudonimise
 git pull --ff-only || true
 pip install -q -r requirements.txt
 
-python -m vpseud.generate --out data --train "${TRAIN_ROWS:-60000}" --dev 4000
-python -m vpseud.train --data data --out out/model --epochs "${EPOCHS:-3}"
-python -m vpseud.export --model out/model --data data --out out/onnx
+# A restart (to add the token) keeps /workspace: train only once.
+if [ ! -f out/onnx/manifest.json ] || [ -n "${RETRAIN:-}" ]; then
+  python -m vpseud.generate --out data --train "${TRAIN_ROWS:-60000}" --dev 4000
+  python -m vpseud.train --data data --out out/model --epochs "${EPOCHS:-3}"
+  python -m vpseud.export --model out/model --data data --out out/onnx
+fi
 
 if [ -n "${GITHUB_TOKEN:-}" ]; then
   TAG="${RELEASE_TAG:-detector-v1}"
