@@ -58,7 +58,8 @@ def main() -> None:
     for variant, path in (("fp32", fp32), ("int8", int8)):
         det = OnnxDetector(path, os.path.join(a.out, "tokenizer.json"))
         for name in ("dev_names", "dev_heldout"):
-            rows = load(os.path.join(a.data, f"{name}.jsonl"))
+            # The first 1500 of each: ONNX on CPU is the slow part of a run.
+            rows = load(os.path.join(a.data, f"{name}.jsonl"))[:1500]
             report[f"{variant}/{name}"] = score(rows, [det.spans(r["text"]) for r in rows])
     os.remove(fp32)
     manifest = {

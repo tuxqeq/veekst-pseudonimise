@@ -85,6 +85,32 @@ PURPOSES: list[tuple[str, str, str]] = [
     ("up", "pl", "FAKTURA {N} {PL:nom} USŁUGI PROGRAMISTYCZNE"),
     ("mix", "pl", "Zaliczka dla {PL:gen} na {MPL}"),
     ("mix", "pl", "Przelew od {PL:gen} tytułem zwrotu pożyczki"),
+    # ---- shapes many banks share, written with invented values
+    ("up", "ru", "ИП {P:nom}ОПЛАТА ЗА УСЛУГИ СОГЛАСНО ДОГОВОРУ PAYR: {N} INV: {N}"),
+    ("up", "ru", "ИП {P:nom} ОПЛАТА ЗА {SERV} СОГЛАСНО ДОГОВОРУ {N}"),
+    ("mix", "ru", "Платеж на осн. эл.сообщ. от {D} {P:nom} Погашение задолженности за {SERV}"),
+    ("mix", "ru", "Возврат по договору от {D}. Плательщик {P:nom} {D} г.р. Платеж не связан с предпринимательской деятельностью"),
+    ("up", "ru", "ПЕРЕЧИСЛЕНИЕ ЕДИНОГО ИМУЩЕСТВЕННОГО ПЛАТЕЖА (ДОЛЖНИК {P:nom} УПН {N})"),
+    ("mix", "ru", "в счёт возмещения ущерба {P:gen} {D}г."),
+    ("mix", "ru", "Возмещение ущерба, причиненного {P:ins}, за хищение от {D}"),
+    ("mix", "ru", "Выплата отпускных на {P:acc} за отработанный период.. Перечисление юридическим лицом в банк заработной платы"),
+    ("mix", "ru", "Расчетные при увольнении для {P:gen}. Перечисление юридическим лицом в банк заработной платы"),
+    ("mix", "ru", "Выплата отпускных за {MON} {Y} года на {P:acc}.. Перечисление в банк"),
+    ("up", "ru", "ПО ДОГОВОРУ ОКАЗАНИЯ ВОЗМЕЗДНЫХ УСЛУГ ЗА {MON}, {Y} {P:nom} РЕЗИДЕНТ РБ, {SERV}"),
+    ("up", "ru", "ОПЛАТА ПО ДОГОВОРУ ПОДРЯДА НА {P:acc}, РЕЗИДЕНТ РЕСПУБЛИКИ БЕЛАРУСЬ, СЧЕТ {N}"),
+    ("mix", "ru", "Внутрибанковский перевод с текущего счета с использованием платежной карты {N}, Клиент {P:nom}, ИИН {N}"),
+    ("mix", "ru", "Перевод по номеру телефона, получатель {P:nom}"),
+    ("mix", "ru", "Оплата по исполнительному документу № {N}, должник {P:nom}"),
+    ("up", "pl", "ZEZWOLENIE NA PRACĘ TYP B - {ORG} DLA {PLAT}"),
+    ("up", "pl", "OŚWIADCZENIE O POWIERZENIU - {ORG} DLA {PLAT}"),
+    ("mix", "pl", "Zwrot za bilety dla {PLAT}"),
+    ("mix", "en", "{PLAT}"),
+    ("mix", "en", "{PSUR}"),
+    ("up", "en", "FROM {PLAT} /PURPOSE/ GDSV OF {D}"),
+    ("up", "en", "SALARY TRANSFER {PLAT} REF {N}"),
+    ("mix", "en", "Reimbursement to {PLAT} for travel, invoice {N}"),
+    ("up", "en", "/BNF/{PLAT} /ROC/{N}"),
+    ("mix", "en", "Payment for IT services, contractor {PLAT}, contract {N} dd {D}"),
 ]
 
 # Purposes that name no private person. About half of what a bank writes.
@@ -123,6 +149,22 @@ NEGATIVES: list[tuple[str, str, str]] = [
     ("mix", "pl", "Faktura {N} {ORG} usługi hostingowe"),
     ("up", "pl", "WYNAGRODZENIE ZA {MPL} {Y}"),
     ("mix", "pl", "Opłata za prowadzenie rachunku {BANK}"),
+    ("up", "ru", "ОБЯЗАТЕЛЬНОЕ СТРАХОВАНИЕ ОТ НЕСЧАСТНЫХ СЛУЧАЕВ НА ПРОИЗВОДСТВЕ ЗА {MON} {Y}"),
+    ("up", "ru", "{WORDS}"),
+    ("up", "ru", "{WORDS} ЗА {MON} {Y} ПО ДОГОВОРУ N {N}"),
+    ("mix", "ru", "{WORDS}"),
+    ("up", "en", "{EWORDS}"),
+    ("up", "en", "{ORG} /ROC/{N} BNY CUST RRN - O/B CITIBANK NY"),
+    ("up", "en", "FROM {ORG} /PURPOSE/ GDSV BNY CUST RRN - CAP OF {D}"),
+    ("mix", "ru", "Плата за услуги {BANK} - дифференцированная плата за пакет услуг за период с {D} по {D}"),
+    ("up", "ru", "{ORG}ОПЛАТА ЗА УСЛУГИ СОГЛАСНО ДОГОВОРУ PAYR: {N} INV: {N}"),
+    ("up", "ru", "ЗАРПЛАТА-АВАНС ЗА {MON} N {N} ОТ {D} Г. ПО ВЕДОМОСТИ ЗА {MON}"),
+    ("up", "ru", "МАТПОМОЩЬ ЗА {MON} N {N} ОТ {D} Г. СОГЛАСНО СПИСКУ"),
+    ("mix", "ru", "Покупка иностранной валюты {CUR} по курсу {AMT}"),
+    ("mix", "ru", "Индивидуальный подоходный налог за {MON} {Y} Сумма {AMT} тенге без налога"),
+    ("up", "ru", "ПОДОХОДНЫЙ НАЛОГ НА ДОХОДЫ ИНОСТРАННЫХ ОРГАНИЗАЦИЙ ЗА {MON} {Y}"),
+    ("up", "pl", "WYNAGRODZENIE {MPL} {Y} LISTA PLAC {N}"),
+    ("mix", "pl", "Składki ZUS za {MPL} {Y}"),
 ]
 
 QUESTIONS: list[tuple[str, str, str]] = [
@@ -137,6 +179,13 @@ QUESTIONS: list[tuple[str, str, str]] = [
     ("q", "ru", "Платежи {P:dat} и {P:dat} это аренда?"),
     ("q", "ru", "Найди платежи с {P:ins}"),
     ("q", "ru", "Сколько дивидендов получил {P:nom}?"),
+    ("q", "ru", "кто такой {P:nom} в выписке"),
+    ("q", "ru", "что за платеж {P:dat}"),
+    ("q", "ru", "{P:nom} это наш сотрудник?"),
+    ("q", "ru", "почему {P:dat} ушло больше чем в прошлом месяце"),
+    ("q", "ru", "переводы от {PLAT} это возврат займа?"),
+    ("q", "en", "who is {PLAT}?"),
+    ("q", "pl", "kim jest {PL:nom}?"),
     ("q", "en", "How much did we pay {PLAT} in {MEN}?"),
     ("q", "en", "Why is the payment to {PLAT} in marketing?"),
     ("q", "en", "{PLAT} is our contractor"),
@@ -158,7 +207,36 @@ QUESTION_NEGATIVES: list[tuple[str, str, str]] = [
     ("q", "en", "Why is March lower than February?"),
     ("q", "en", "How much did we pay {ORG} in {MEN}?"),
     ("q", "pl", "Ile wydaliśmy na {SERV} w {MPL}?"),
+    ("q", "ru", "почему страхование от несчастных случаев в расходах?"),
+    ("q", "ru", "сколько ушло на подоходный налог за {Y}"),
+    ("q", "ru", "что значит статус «{WORDS}»?"),
+    ("q", "ru", "Покажи платежи {BANK}"),
 ]
+
+# Words of payments, for texts with no name in them: a word in capitals that
+# ends like a surname is still a word.
+WORDS = """
+ОБЯЗАТЕЛЬНОЕ СТРАХОВАНИЕ НЕСЧАСТНЫХ СЛУЧАЕВ ПРОИЗВОДСТВЕ ВЗНОСОВ ДОХОДОВ НАЛОГОВ
+РАБОТНИКОВ ТОВАРОВ СЧЕТОВ РАСХОДОВ ДИВИДЕНДОВ СТРАХОВОЙ ОБЪЕКТОВ МАГАЗИНОВ
+ПЛАТЕЖЕЙ УСЛУГ ДОГОВОРОВ КЛИЕНТОВ СОТРУДНИКОВ ПОСТАВЩИКОВ ПОКУПАТЕЛЕЙ ВЕДОМОСТИ
+ПЕРЕЧИСЛЕНИЕ ЗАЧИСЛЕНИЕ ВОЗВРАТ ПОГАШЕНИЕ КРЕДИТА ОВЕРДРАФТА ПРОЦЕНТОВ КОМИССИЯ
+ЭКВАЙРИНГ ИНКАССАЦИЯ ОБСЛУЖИВАНИЕ ДОСТАВКА АРЕНДА ЛИЗИНГ ПОСТАВКА ПРЕДОПЛАТА
+АВАНС ДОПЛАТА ПЕНЯ ШТРАФ СБОР ПОШЛИНА ТАМОЖЕННАЯ ГОСПОШЛИНА ВЗНОС ФОНД
+ФСЗН БЕЛГОССТРАХ ИМНС КАЗНАЧЕЙСТВО МИНФИН ОТЧИСЛЕНИЯ ОСМС ЕНПФ ГОСКОРПОРАЦИЯ
+ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ ЛИЦЕНЗИЯ ПОДПИСКА ХОСТИНГ ДОМЕН СЕРТИФИКАТ ЭЦП
+КАНЦТОВАРЫ ОРГТЕХНИКА МЕБЕЛЬ РЕМОНТ МОНТАЖ ДЕМОНТАЖ ОХРАНА СИГНАЛИЗАЦИИ
+ТРАНСПОРТНЫЕ КОМАНДИРОВОЧНЫЕ ПРЕДСТАВИТЕЛЬСКИЕ ПРОЕЗДНЫЕ СУТОЧНЫЕ ПРЕМИЯ
+БОЛЬНИЧНЫЙ ОТПУСКНЫЕ МАТПОМОЩЬ ЗАРПЛАТА ВОЗНАГРАЖДЕНИЕ КОМПЕНСАЦИЯ ПОСОБИЕ
+ИВАНОВКА ПЕТРОВКА ЛЕНИНСКИЙ ФРУНЗЕНСКИЙ ПЕРВОМАЙСКИЙ СОВЕТСКИЙ ЗАВОДСКОЙ
+ПРИОРБАНК БЕЛАРУСБАНК БЕЛИНВЕСТБАНК БЕЛАГРОПРОМБАНК МТБАНК ДАБРАБЫТ БЕЛГАЗПРОМБАНК
+""".split()
+
+EWORDS = """
+PAYMENT TRANSFER INVOICE SERVICES CONSULTING DEVELOPMENT SOFTWARE MARKETING
+SUBSCRIPTION LICENSE HOSTING CLOUD SUPPORT MAINTENANCE COMMISSION FEE CHARGES
+DEDUCTED PURPOSE REFERENCE CONTRACT AGREEMENT ANNEX ORDER PREPAYMENT SETTLEMENT
+CONNECTED BUSINESS ACTIVITY ACCOUNT TRANSFERS GOODS DELIVERY FREIGHT INSURANCE
+""".split()
 
 ORGS = """
 ООО «Ромашка»|ОДО "ТЕХНОСТРОЙ"|ЧУП «БЕЛСЕРВИС»|УП "МИНСКВОДОКАНАЛ"|ИООО "ДПД БЕЛ"|

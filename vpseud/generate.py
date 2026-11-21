@@ -77,6 +77,8 @@ class Filler:
         rnd, pools = self.rnd, self.pools
         if kind == "P":
             p = names.person(rnd, pools, "ru")
+            if rnd.random() < 0.08:
+                return names.render_latin(p, rnd), True
             upper = True if style == "up" else (rnd.random() < 0.2)
             text = names.render(p, case, rnd, upper=upper)
             if style == "q" and rnd.random() < 0.35:
@@ -94,7 +96,13 @@ class Filler:
             text = names.render_latin(p, rnd)
             if style == "up":
                 text = text.upper()
+            elif style == "q" and rnd.random() < 0.3:
+                text = text.lower()
             return text, True
+        if kind == "PSUR":
+            p = names.person(rnd, pools, "ru")
+            text = names.translit(p.surname_in("nom"))
+            return (text.upper() if rnd.random() < 0.5 else text), True
         table = {
             "ORG": lambda: rnd.choice(T.ORGS).strip(),
             "BANK": lambda: rnd.choice(T.BANKS),
@@ -111,6 +119,8 @@ class Filler:
             "CITY": lambda: rnd.choice(T.CITIES),
             "STREET": lambda: rnd.choice(T.STREETS).replace("{N}", str(rnd.randint(1, 120))),
             "CUR": lambda: rnd.choice(T.CURRENCIES),
+            "WORDS": lambda: " ".join(rnd.sample(T.WORDS, rnd.randint(2, 7))),
+            "EWORDS": lambda: " ".join(rnd.sample(T.EWORDS, rnd.randint(2, 7))),
         }
         return table[kind](), False
 

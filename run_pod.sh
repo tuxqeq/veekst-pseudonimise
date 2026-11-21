@@ -16,7 +16,7 @@ pip install -q -r requirements.txt
 
 # A restart (to add the token) keeps /workspace: train only once.
 if [ ! -f out/onnx/manifest.json ] || [ -n "${RETRAIN:-}" ]; then
-  python -m vpseud.generate --out data --train "${TRAIN_ROWS:-60000}" --dev 4000
+  python -m vpseud.generate --out data --train "${TRAIN_ROWS:-120000}" --dev 4000
   python -m vpseud.train --data data --out out/model --epochs "${EPOCHS:-3}"
   python -m vpseud.export --model out/model --data data --out out/onnx
 fi
