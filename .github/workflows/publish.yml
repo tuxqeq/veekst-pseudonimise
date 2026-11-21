@@ -1,7 +1,7 @@
 # Publishes a trained detector as a release of this repository.
 #
 # The training pod has no GitHub credential. It serves its out/onnx for a
-# short while at an address kept in the repository secret POD_URL, so the
+# short while at an address kept in the repository variable POD_URL, so the
 # address is never in the history or in a run's inputs. This workflow fetches
 # the three files, checks each against the sha256 given when it was started
 # (read on the pod itself), and makes the release with the workflow's own
@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: fetch and check
         env:
-          URL: ${{ secrets.POD_URL }}
+          URL: ${{ vars.POD_URL }}
           DET: ${{ inputs.detector_sha256 }}
           TOK: ${{ inputs.tokenizer_sha256 }}
         run: |
